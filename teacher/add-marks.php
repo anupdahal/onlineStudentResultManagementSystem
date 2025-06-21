@@ -45,6 +45,131 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
 <meta charset="UTF-8" />
 <title>Add Marks</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  /* Body and container */
+  body {
+    background: linear-gradient(135deg, #0f3460, #16213e);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    margin: 0;
+    padding: 40px 20px;
+  }
+
+  h2 {
+    text-align: center;
+    color: #80ffdb;
+    font-size: 2rem;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+  }
+
+  form {
+    max-width: 600px;
+    margin: 0 auto;
+    background: rgba(255,255,255,0.05);
+    padding: 30px 40px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  }
+
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #80ffdb;
+    font-size: 1rem;
+  }
+
+  select, input[type="number"] {
+    width: 100%;
+    padding: 12px 15px;
+    border-radius: 10px;
+    border: none;
+    background-color: rgba(255,255,255,0.12);
+    color: #e0e0e0;
+    font-size: 1rem;
+    margin-bottom: 20px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-sizing: border-box;
+  }
+
+  select:focus, input[type="number"]:focus {
+    outline: none;
+    background-color: rgba(255,255,255,0.25);
+    box-shadow: 0 0 10px #3282b8;
+    color: white;
+  }
+
+  button {
+    width: 100%;
+    padding: 14px 25px;
+    background: linear-gradient(to right, #1a508b, #3282b8);
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+    user-select: none;
+  }
+
+  button:hover {
+    background: linear-gradient(to right, #3282b8, #1a508b);
+    box-shadow: 0 6px 18px rgba(50,130,184,0.7);
+  }
+
+  /* Messages */
+  p[style*="color: red"] {
+    background-color: rgba(255,0,0,0.1);
+    color: #ff6b6b;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(255,0,0,0.3);
+  }
+
+  p[style*="color: green"] {
+    background-color: rgba(76,175,80,0.2);
+    color: #4aff7a;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 600;
+    max-width: 600px;
+    margin: 0 auto 20px auto;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(76,175,80,0.5);
+  }
+
+  /* Link back */
+  a {
+    color: #80ffdb;
+    display: block;
+    max-width: 600px;
+    margin: 25px auto 0 auto;
+    text-decoration: none;
+    font-weight: 600;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Responsive */
+  @media (max-width: 650px) {
+    body {
+      padding: 20px 10px;
+    }
+    form {
+      padding: 20px 25px;
+    }
+  }
+</style>
+
 <script>
 function loadSubjects(semesterId) {
     if (semesterId == "") {
@@ -66,7 +191,6 @@ function loadSubjects(semesterId) {
     };
     xhr.send();
 }
-
 </script>
 </head>
 <body>
@@ -90,7 +214,6 @@ function loadSubjects(semesterId) {
             </option>
         <?php endwhile; ?>
     </select>
-    <br><br>
 
     <label for="semester">Select Semester:</label>
     <select name="semester" id="semester" required onchange="loadSubjects(this.value)">
@@ -99,21 +222,17 @@ function loadSubjects(semesterId) {
             <option value="<?= $sem['id'] ?>"><?= htmlspecialchars($sem['class_name']) ?></option>
         <?php endwhile; ?>
     </select>
-    <br><br>
 
     <label for="subject_id">Select Subject:</label>
     <select name="subject_id" id="subject_id" required>
         <option value="">-- Select Subject --</option>
     </select>
-    <br><br>
 
     <label for="theory_marks">Theory Marks:</label>
     <input type="number" id="theory_marks" name="theory_marks" min="0" required />
-    <br><br>
 
     <label for="practical_marks">Practical Marks:</label>
     <input type="number" id="practical_marks" name="practical_marks" min="0" required />
-    <br><br>
 
     <label for="term">Select Term:</label>
     <select name="term" id="term" required>
@@ -121,12 +240,10 @@ function loadSubjects(semesterId) {
         <option value="Second Term">Second Term</option>
         <option value="Final Term">Final Term</option>
     </select>
-    <br><br>
 
     <button type="submit">Submit Marks</button>
 </form>
 
-<br>
 <a href="dashboard.php">← Back to Dashboard</a>
 
 </body>

@@ -7,28 +7,99 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 
+// Fetch all notices sent by admin (assuming sender_teacher_id is NULL for admin)
 $notices = $conn->query("
     SELECT n.*, 
-        CASE 
-            WHEN n.target_type = 'student' THEN s.name
-            WHEN n.target_type = 'teacher' THEN t.name
-            ELSE 'Unknown'
-        END AS recipient_name
+           CASE n.target_type
+               WHEN 'student' THEN (SELECT name FROM students WHERE id = n.target_id)
+               WHEN 'teacher' THEN (SELECT name FROM teachers WHERE id = n.target_id)
+               ELSE 'Unknown'
+           END AS recipient_name
     FROM notices n
-    LEFT JOIN students s ON n.target_type = 'student' AND n.target_id = s.id
-    LEFT JOIN teachers t ON n.target_type = 'teacher' AND n.target_id = t.id
     WHERE sender_teacher_id IS NULL
     ORDER BY timestamp DESC
 ");
-?>
 
+if (!$notices) {
+    die("Query failed: " . $conn->error);
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Admin Sent Notices</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        table { border-collapse: collapse; width: 100%; margin-top: 20px; }
-        th, td { border: 1px solid #999; padding: 8px; text-align: left; }
+        body {
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #f1f1f1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(8px);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #80ffdb;
+        }
+
+        tr:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+
+        td {
+            color: #ddd;
+            font-size: 15px;
+        }
+
+        a {
+            display: block;
+            margin: 20px auto;
+            text-align: center;
+            color: #80ffdb;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        a:hover {
+            color: #ffd166;
+        }
+
+        @media (max-width: 600px) {
+            table, th, td {
+                font-size: 13px;
+            }
+        }
+
+        .no-notice {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 18px;
+            color: #ccc;
+        }
     </style>
 </head>
 <body>
@@ -47,18 +118,18 @@ $notices = $conn->query("
     <?php while ($n = $notices->fetch_assoc()): ?>
         <tr>
             <td><?= htmlspecialchars($n['recipient_name']) ?></td>
-            <td><?= htmlspecialchars($n['target_type']) ?></td>
+            <td><?= htmlspecialchars(ucfirst($n['target_type'])) ?></td>
             <td><?= htmlspecialchars($n['subject']) ?></td>
             <td><?= htmlspecialchars($n['message']) ?></td>
-            <td><?= $n['timestamp'] ?></td>
+            <td><?= date("Y-m-d h:i A", strtotime($n['timestamp'])) ?></td>
         </tr>
     <?php endwhile; ?>
 </table>
 <?php else: ?>
-    <p>No notices sent yet.</p>
+    <p class="no-notice">No notices sent yet.</p>
 <?php endif; ?>
 
-<a href="dashboard.php">← Back</a>
+<a href="dashboard.php">← Back to Dashboard</a>
 
 </body>
 </html>

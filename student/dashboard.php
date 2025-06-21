@@ -15,7 +15,6 @@ if (!isset($_SESSION['student_name'])) {
     }
 }
 
-
 $student_id = $_SESSION['student_id'];
 
 // Fetch Notices
@@ -41,72 +40,192 @@ $results = $conn->query("
     WHERE r.student_id = '$student_id'
     ORDER BY r.term, r.timestamp DESC
 ");
-
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
     <title>Student Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style>
-        table { border-collapse: collapse; width: 100%; margin-bottom: 30px; }
-        th, td { border: 1px solid #999; padding: 8px; text-align: left; }
-        th { background-color: #eee; }
+        /* Reset & base */
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f3f4f6;
+            margin: 0;
+            padding: 20px;
+            color: #1e293b;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+            padding: 30px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #2563eb;
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 2.2rem;
+        }
+
+        h3 {
+            color: #1e40af;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #2563eb;
+            padding-bottom: 5px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 12px 15px;
+            text-align: left;
+            color: #334155;
+        }
+
+        th {
+            background-color: #e0e7ff;
+            color: #1e3a8a;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        tr:hover {
+            background-color: #dbeafe;
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: #64748b;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        a.logout-btn {
+            display: inline-block;
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+            transition: background-color 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        a.logout-btn:hover {
+            background-color: #1e40af;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+            h3 {
+                font-size: 1.3rem;
+            }
+            table, th, td {
+                font-size: 0.85rem;
+            }
+            a.logout-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+
     </style>
 </head>
 <body>
+    <a href="../logout.php" class="logout-btn">Logout</a>
+<div class="container">
+    <h2>Welcome, <?= htmlspecialchars($_SESSION['student_name']) ?></h2>
 
-<h2>Welcome, <?= $_SESSION['student_name'] ?></h2>
+    <h3>📢 Notices for You</h3>
+    <?php if ($notices->num_rows > 0): ?>
+        <table>
+            <thead>
+                <tr>
+                    <th>Subject</th>
+                    <th>Message</th>
+                    <th>Sender</th>
+                    <th>Sent On</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php while ($n = $notices->fetch_assoc()): ?>
+                <tr>
+                    <td><?= htmlspecialchars($n['subject']) ?></td>
+                    <td><?= htmlspecialchars($n['message']) ?></td>
+                    <td><?= htmlspecialchars($n['sender_name']) ?></td>
+                    <td><?= htmlspecialchars($n['timestamp']) ?></td>
+                </tr>
+            <?php endwhile; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>No notices found.</p>
+    <?php endif; ?>
 
-<h3>📢 Notices for You</h3>
-<?php if ($notices->num_rows > 0): ?>
-    <table>
-        <tr>
-            <th>Subject</th>
-            <th>Message</th>
-            <th>Sender</th>
-            <th>Sent On</th>
-        </tr>
-        <?php while ($n = $notices->fetch_assoc()): ?>
-            <tr>
-                <td><?= htmlspecialchars($n['subject']) ?></td>
-                <td><?= htmlspecialchars($n['message']) ?></td>
-                <td><?= htmlspecialchars($n['sender_name']) ?></td>
-                <td><?= $n['timestamp'] ?></td>
-            </tr>
-        <?php endwhile; ?>
-    </table>
-<?php else: ?>
-    <p>No notices found.</p>
-<?php endif; ?>
+    <h3>📊 Your Results</h3>
+    <?php if ($results->num_rows > 0): ?>
+        <table>
+            <thead>
+                <tr>
+                    <th>Class</th>
+                    <th>Subject</th>
+                    <th>Theory Marks</th>
+                    <th>Practical Marks</th>
+                    <th>Term</th>
+                    <th>Submitted By</th>
+                    <th>Submitted On</th>
+                </tr>
+            </thead>
+            <tbody>
+            <?php while ($r = $results->fetch_assoc()): ?>
+                <tr>
+                    <td><?= htmlspecialchars($r['class_name']) ?></td>
+                    <td><?= htmlspecialchars($r['subject_name']) ?></td>
+                    <td><?= $r['theory_marks'] ?></td>
+                    <td><?= $r['practical_marks'] ?></td>
+                    <td><?= htmlspecialchars($r['term']) ?></td>
+                    <td><?= htmlspecialchars($r['teacher_name']) ?></td>
+                    <td><?= htmlspecialchars($r['timestamp']) ?></td>
+                </tr>
+            <?php endwhile; ?>
+            </tbody>
+        </table>
+    <?php else: ?>
+        <p>No results submitted yet.</p>
+    <?php endif; ?>
 
-<h3>📊 Your Results</h3>
-<?php if ($results->num_rows > 0): ?>
-    <table>
-        <tr>
-            <th>Class</th>
-            <th>Subject</th>
-            <th>Theory Marks</th>
-            <th>Practical Marks</th>
-            <th>Submitted By</th>
-            <th>Submitted On</th>
-        </tr>
-        <?php while ($r = $results->fetch_assoc()): ?>
-            <tr>
-                <td><?= htmlspecialchars($r['class_name']) ?></td>
-                <td><?= htmlspecialchars($r['subject_name']) ?></td>
-                <td><?= $r['theory_marks'] ?></td>
-                <td><?= $r['practical_marks'] ?></td>
-                <td><?= htmlspecialchars($r['teacher_name']) ?></td>
-                <td><?= $r['timestamp'] ?></td>
-            </tr>
-        <?php endwhile; ?>
-    </table>
-<?php else: ?>
-    <p>No results submitted yet.</p>
-<?php endif; ?>
-
-<a href="../logout.php">Logout</a>
+    <!-- <a href="../logout.php" class="logout-btn">Logout</a> -->
+</div>
 
 </body>
 </html>

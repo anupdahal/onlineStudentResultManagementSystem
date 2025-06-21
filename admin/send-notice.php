@@ -37,17 +37,188 @@ if (isset($_POST['send'])) {
 <html>
 <head>
     <title>Send Notice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
-        body { font-family: Arial; margin: 20px; }
-        .container { max-width: 700px; margin: auto; }
-        select { width: 100%; height: 150px; }
-        label { font-weight: bold; margin-top: 15px; display: block; }
-        button { margin-top: 10px; }
-        .info { font-size: 0.9em; color: #555; }
-        .message { color: green; margin-bottom: 20px; }
-        .error { color: red; margin-bottom: 20px; }
+        /* Body & Container */
+        body {
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: white;
+            padding: 40px 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 700px;
+            margin: auto;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Headings */
+        h2 {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #80ffdb;
+            letter-spacing: 1px;
+        }
+
+        /* Labels */
+        label {
+            font-weight: 600;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            display: block;
+            color: #80ffdb;
+            font-size: 1rem;
+        }
+
+        /* Inputs & Selects & Textarea */
+        select, input[type="text"], textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.12);
+            color: #e0e0e0;
+            font-size: 1rem;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            box-sizing: border-box;
+            font-weight: 400;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        select[multiple] {
+            height: 180px;
+        }
+        input::placeholder,
+        textarea::placeholder {
+            color: #bbb;
+            font-style: italic;
+        }
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            background-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 0 10px #3282b8;
+            color: white;
+        }
+
+        /* Style the multiple select options */
+        select option {
+            background-color: #16213e;
+            color: #e0e0e0;
+            padding: 5px;
+        }
+        select option:hover,
+        select option:focus,
+        select option:checked {
+            background-color: #3282b8;
+            color: white;
+        }
+
+        /* Buttons */
+        button {
+            margin-top: 25px;
+            background: linear-gradient(to right, #1a508b, #3282b8);
+            color: white;
+            padding: 14px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            width: 100%;
+            cursor: pointer;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            user-select: none;
+        }
+        button:hover {
+            background: linear-gradient(to right, #3282b8, #1a508b);
+            box-shadow: 0 6px 18px rgba(50, 130, 184, 0.7);
+        }
+        button[type="button"] {
+            width: auto;
+            padding: 8px 15px;
+            margin: 8px 8px 12px 0;
+            font-size: 0.85rem;
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #ddd;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+        button[type="button"]:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+        /* Message & Error */
+        .message, .error {
+            padding: 14px 20px;
+            margin-bottom: 25px;
+            text-align: center;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.02em;
+        }
+        .message {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #4aff7a;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+        .error {
+            background-color: rgba(255, 0, 0, 0.1);
+            color: #ff6b6b;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+        }
+
+        /* Search input fields */
+        #studentSearch, #teacherSearch {
+            margin: 12px 0 12px 0;
+            padding: 10px 15px;
+            font-size: 1rem;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            border: none;
+            color: #eee;
+            font-style: italic;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        #studentSearch::placeholder,
+        #teacherSearch::placeholder {
+            color: #ccc;
+        }
+        #studentSearch:focus,
+        #teacherSearch:focus {
+            background-color: rgba(255,255,255,0.2);
+            outline: none;
+            box-shadow: 0 0 8px #3282b8;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 650px) {
+            .container {
+                padding: 20px;
+            }
+            select[multiple] {
+                height: 130px;
+            }
+            button {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
+
 <body>
 
 <div class="container">

@@ -24,51 +24,127 @@ WHERE r.added_by_teacher_id = '$teacher_id'
 ORDER BY r.timestamp DESC
 ";
 
-
 $results = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Results Sent by You</title>
+    <meta charset="UTF-8">
+    <title>Results You Submitted</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body { font-family: Arial; margin: 20px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 15px; }
-        th, td { border: 1px solid #aaa; padding: 8px; }
-        th { background-color: #f0f0f0; }
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            padding: 20px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            color: #2563eb;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+        }
+
+        th, td {
+            border: 1px solid #cbd5e1;
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 15px;
+        }
+
+        th {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+
+        a {
+            display: inline-block;
+            text-decoration: none;
+            padding: 10px 16px;
+            background-color: #2563eb;
+            color: white;
+            border-radius: 6px;
+            transition: background 0.3s ease;
+        }
+
+        a:hover {
+            background-color: #1d4ed8;
+        }
+
+        @media (max-width: 768px) {
+            table, th, td {
+                font-size: 13px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+
+            a {
+                font-size: 14px;
+                padding: 8px 14px;
+            }
+        }
     </style>
 </head>
 <body>
 
-<h2>Results You've Submitted</h2>
+<div class="container">
+    <h2>📊 Results You've Submitted</h2>
 
-<?php if ($results->num_rows > 0): ?>
-    <table>
-        <tr>
-            <th>Student</th>
-            <th>Class</th>
-            <th>Subject</th>
-            <th>Theory Marks</th>
-            <th>Practical Marks</th>
-            <th>Submitted On</th>
-        </tr>
-        <?php while ($r = $results->fetch_assoc()): ?>
+    <?php if ($results->num_rows > 0): ?>
+        <table>
             <tr>
-                <td><?= htmlspecialchars($r['student_name']) ?></td>
-                <td><?= htmlspecialchars($r['class_name']) ?></td>
-                <td><?= htmlspecialchars($r['subject_name']) ?></td>
-                <td><?= htmlspecialchars($r['theory_marks']) ?></td>
-                <td><?= htmlspecialchars($r['practical_marks']) ?></td>
-                <td><?= $r['timestamp'] ?></td>
+                <th>Student</th>
+                <th>Class</th>
+                <th>Subject</th>
+                <th>Theory Marks</th>
+                <th>Practical Marks</th>
+                <th>Submitted On</th>
             </tr>
-        <?php endwhile; ?>
-    </table>
-<?php else: ?>
-    <p>No results submitted yet.</p>
-<?php endif; ?>
+            <?php while ($r = $results->fetch_assoc()): ?>
+                <tr>
+                    <td><?= htmlspecialchars($r['student_name']) ?></td>
+                    <td><?= htmlspecialchars($r['class_name']) ?></td>
+                    <td><?= htmlspecialchars($r['subject_name']) ?></td>
+                    <td><?= htmlspecialchars($r['theory_marks']) ?></td>
+                    <td><?= htmlspecialchars($r['practical_marks']) ?></td>
+                    <td><?= htmlspecialchars($r['timestamp']) ?></td>
+                </tr>
+            <?php endwhile; ?>
+        </table>
+    <?php else: ?>
+        <p>No results submitted yet.</p>
+    <?php endif; ?>
 
-<a href="dashboard.php">← Back to Dashboard</a>
+    <a href="dashboard.php">← Back to Dashboard</a>
+</div>
 
 </body>
 </html>

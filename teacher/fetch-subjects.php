@@ -12,8 +12,11 @@ $semester_id = intval($_GET['semester_id']);
 $result = $conn->query("SELECT id, subject_name FROM subjects WHERE class_id = $semester_id ORDER BY subject_name");
 
 $subjects = [];
-while ($row = $result->fetch_assoc()) {
-    $subjects[] = $row;
+
+if ($result && $result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $subjects[] = $row;
+    }
 }
 
 header('Content-Type: application/json');
