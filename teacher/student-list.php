@@ -16,25 +16,70 @@ $students = $conn->query("SELECT * FROM students WHERE status='approved'");
     <title>Approved Students List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-        body {
-            font-family: "Segoe UI", sans-serif;
-            background-color: #f8fafc;
+        * {
             margin: 0;
-            padding: 20px;
-            color: #1e293b;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            color: white;
+            padding-top: 80px;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #0f3460;
+            padding: 15px 30px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #80ffdb;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #3282b8;
         }
 
         .container {
             max-width: 1000px;
             margin: auto;
-            background: white;
+            background: rgba(255, 255, 255, 0.05);
             padding: 30px;
             border-radius: 10px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
         }
 
         h2 {
-            color: #2563eb;
+            color: #80ffdb;
             text-align: center;
             margin-bottom: 25px;
         }
@@ -46,43 +91,51 @@ $students = $conn->query("SELECT * FROM students WHERE status='approved'");
         }
 
         th, td {
-            border: 1px solid #cbd5e1;
-            padding: 10px 14px;
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 12px 15px;
             text-align: left;
             font-size: 15px;
-            vertical-align: middle;
         }
 
         th {
-            background-color: #f1f5f9;
-            color: #1e293b;
+            background-color: rgba(255,255,255,0.1);
+            color: #80ffdb;
         }
 
         tr:nth-child(even) {
-            background-color: #f8fafc;
+            background-color: rgba(255,255,255,0.05);
         }
 
-        /* Student photo thumbnail */
+        tr:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
         .student-photo {
             width: 50px;
             height: 50px;
             object-fit: cover;
             border-radius: 50%;
-            border: 1px solid #ddd;
+            border: 2px solid #3282b8;
         }
 
-        a {
+        a.back-link {
             display: inline-block;
             text-decoration: none;
-            padding: 10px 16px;
-            background-color: #2563eb;
+            padding: 12px 20px;
+            background-color: #1a508b;
             color: white;
-            border-radius: 6px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
             transition: background 0.3s ease;
         }
 
-        a:hover {
-            background-color: #1d4ed8;
+        a.back-link:hover {
+            background-color: #3282b8;
+        }
+
+        .link-container {
+            text-align: center;
         }
 
         @media (max-width: 768px) {
@@ -98,26 +151,42 @@ $students = $conn->query("SELECT * FROM students WHERE status='approved'");
                 font-size: 20px;
             }
 
-            a {
-                font-size: 14px;
-                padding: 8px 14px;
+            .navbar ul {
+                flex-wrap: wrap;
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
 
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="logo">📚 MySchool</div>
+    <ul>
+        <li><a href="../index.php">🏠 Home</a></li>
+        <li><a href="../register.php">📝 Register</a></li>
+        <li><a href="../login.php">👨‍🎓 Student Login</a></li>
+        <li><a href="../teacher/login.php">👩‍🏫 Teacher Login</a></li>
+        <li><a href="../admin/login.php">🛠️ Admin Panel</a></li>
+        <li> <a href="dashboard.php">← Back to Teacher Dashboard</a></li>
+    </ul>
+</nav>
+    </div>
 <div class="container">
     <h2>✅ Approved Students List</h2>
     <table>
-        <tr>
-            <th>Photo</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Parent Phone</th>
-            <th>Address</th>
-        </tr>
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Parent Phone</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+        <tbody>
         <?php while ($student = $students->fetch_assoc()): ?>
             <tr>
                 <td>
@@ -134,9 +203,9 @@ $students = $conn->query("SELECT * FROM students WHERE status='approved'");
                 <td><?= htmlspecialchars($student['address']) ?></td>
             </tr>
         <?php endwhile; ?>
+        </tbody>
     </table>
 
-    <a href="dashboard.php">← Back to Dashboard</a>
 </div>
 
 </body>

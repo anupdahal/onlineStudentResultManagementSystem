@@ -30,26 +30,71 @@ if (isset($_POST['login'])) {
     <title>Teacher Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            background: linear-gradient(to right, #0f3460, #16213e);
+            background: linear-gradient(135deg, #0f3460, #16213e);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
             color: white;
+            min-height: 100vh;
+            padding-top: 80px; /* space for navbar */
         }
 
+        /* Navbar styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #0f3460;
+            padding: 15px 30px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #80ffdb;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #3282b8;
+        }
+
+        /* Login box styles */
         .login-box {
             background-color: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             padding: 30px 40px;
             border-radius: 15px;
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            width: 100%;
+            width: 90%;
             max-width: 400px;
+            margin: auto;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to   { opacity: 1; transform: scale(1); }
         }
 
         h2 {
@@ -68,6 +113,7 @@ if (isset($_POST['login'])) {
             background-color: rgba(255, 255, 255, 0.1);
             color: white;
             font-size: 16px;
+            transition: 0.3s;
         }
 
         input::placeholder {
@@ -117,11 +163,35 @@ if (isset($_POST['login'])) {
             input, button {
                 font-size: 14px;
             }
+
+            .navbar { 
+                flex-direction: column; 
+                align-items: flex-start; 
+            }
+
+            .navbar ul { 
+                flex-direction: column; 
+                gap: 10px; 
+                margin-top: 10px; 
+            }
         }
     </style>
 </head>
 <body>
 
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="logo">📚 MySchool</div>
+    <ul>
+        <li><a href="../index.php">🏠 Home</a></li>
+        <li><a href="../register.php">📝 Student Register</a></li>
+        <li><a href="../login.php">👨‍🎓 Student Login</a></li>
+        <li><a href="login.php">👩‍🏫 Teacher Login</a></li>
+        <li><a href="../admin/login.php">🛠️ Admin Login</a></li>
+    </ul>
+</nav>
+
+<!-- Login box -->
 <div class="login-box">
     <h2>Teacher Login</h2>
     <?php if (isset($error)): ?>

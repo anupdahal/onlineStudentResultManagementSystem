@@ -21,22 +21,69 @@ if (!$result) {
     <title>All Approved Students</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: linear-gradient(135deg, #0f3460, #16213e);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 40px 20px;
             color: white;
+            padding-top: 80px;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #0f3460;
+            padding: 15px 30px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            color: #80ffdb;
+            font-weight: 600;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #3282b8;
         }
 
         h2 {
             text-align: center;
             font-size: 28px;
-            margin-bottom: 20px;
-            color: #f1f1f1;
+            margin-bottom: 30px;
+            color: #80ffdb;
         }
 
         table {
-            width: 100%;
+            width: 90%;
+            margin: 0 auto 30px auto;
             border-collapse: collapse;
             background-color: rgba(255,255,255,0.05);
             backdrop-filter: blur(6px);
@@ -49,11 +96,13 @@ if (!$result) {
             padding: 14px;
             text-align: left;
             border-bottom: 1px solid rgba(255,255,255,0.1);
+            color: #dbeafe;
         }
 
         th {
-            background-color: rgba(255,255,255,0.1);
-            color: #80ffdb;
+            background-color: rgba(50,130,184,0.8);
+            color: #fff;
+            font-weight: bold;
         }
 
         tr:hover {
@@ -68,9 +117,8 @@ if (!$result) {
             border: 2px solid #3282b8;
         }
 
-        a {
+        a.back {
             display: inline-block;
-            margin-top: 25px;
             text-decoration: none;
             padding: 10px 20px;
             background-color: #1a508b;
@@ -79,13 +127,19 @@ if (!$result) {
             font-weight: bold;
             transition: 0.3s;
             text-align: center;
+            margin: 20px auto;
         }
 
-        a:hover {
+        a.back:hover {
             background-color: #3282b8;
         }
 
         @media (max-width: 768px) {
+            .navbar ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+
             table, th, td {
                 font-size: 14px;
             }
@@ -102,13 +156,26 @@ if (!$result) {
             }
 
             body {
-                padding: 20px 10px;
+                padding-top: 100px;
             }
         }
     </style>
 </head>
 <body>
 
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="logo">📚 MySchool</div>
+    <ul>
+        <li><a href="../index.php">🏠 Home</a></li>
+        <li><a href="../register.php">📝 Student Register</a></li>
+        <li><a href="../login.php">👨‍🎓 Student Login</a></li>
+        <li><a href="../teacher/login.php">👩‍🏫 Teacher Login</a></li>
+        <li><a href="../admin/login.php">🛠️ Admin Login</a></li>
+    </ul>
+</nav>
+<div style="text-align:center;">
+    <a href="dashboard.php" class="back">← Back to Admin Dashboard</a>
 <h2>All Approved Students</h2>
 
 <table>
@@ -142,8 +209,8 @@ if (!$result) {
     </tbody>
 </table>
 
-<div style="text-align:center;">
-    <a href="dashboard.php">← Back to Admin Dashboard</a>
+<!-- <div style="text-align:center;">
+    <a href="dashboard.php" class="back">← Back to Admin Dashboard</a> -->
 </div>
 
 </body>

@@ -31,13 +31,57 @@ if (isset($_POST['add'])) {
 <title>Add Subject</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
   body {
     background: linear-gradient(135deg, #0f3460, #16213e);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
     margin: 0;
-    padding: 40px 20px;
+    padding-top: 80px;
   }
+
+  /* Navbar style */
+  .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #0f3460;
+    padding: 15px 30px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    color: #80ffdb;
+    font-weight: 600;
+  }
+  .navbar .logo {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+  }
+  .navbar ul li a {
+    text-decoration: none;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: 0.3s;
+    font-weight: 500;
+  }
+  .navbar ul li a:hover {
+    background-color: #3282b8;
+  }
+
   h2 {
     text-align: center;
     color: #80ffdb;
@@ -45,6 +89,7 @@ if (isset($_POST['add'])) {
     margin-bottom: 30px;
     letter-spacing: 1px;
   }
+
   form {
     max-width: 500px;
     margin: 0 auto;
@@ -54,6 +99,7 @@ if (isset($_POST['add'])) {
     backdrop-filter: blur(10px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.4);
   }
+
   label {
     display: block;
     font-weight: 600;
@@ -61,6 +107,7 @@ if (isset($_POST['add'])) {
     color: #80ffdb;
     font-size: 1rem;
   }
+
   select, input[type="text"], input[type="number"] {
     width: 100%;
     padding: 12px 15px;
@@ -71,14 +118,15 @@ if (isset($_POST['add'])) {
     font-size: 1rem;
     margin-bottom: 20px;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-sizing: border-box;
   }
+
   select:focus, input[type="text"]:focus, input[type="number"]:focus {
     outline: none;
     background-color: rgba(255,255,255,0.25);
     box-shadow: 0 0 10px #3282b8;
     color: white;
   }
+
   button {
     width: 100%;
     padding: 14px 25px;
@@ -90,12 +138,13 @@ if (isset($_POST['add'])) {
     font-size: 1.1rem;
     cursor: pointer;
     transition: background 0.3s ease, box-shadow 0.3s ease;
-    user-select: none;
   }
+
   button:hover {
     background: linear-gradient(to right, #3282b8, #1a508b);
     box-shadow: 0 6px 18px rgba(50,130,184,0.7);
   }
+
   p.message {
     background-color: rgba(76,175,80,0.2);
     color: #4aff7a;
@@ -107,6 +156,7 @@ if (isset($_POST['add'])) {
     text-align: center;
     box-shadow: 0 0 10px rgba(76,175,80,0.5);
   }
+
   p.error {
     background-color: rgba(255,0,0,0.1);
     color: #ff6b6b;
@@ -118,9 +168,11 @@ if (isset($_POST['add'])) {
     text-align: center;
     box-shadow: 0 0 10px rgba(255,0,0,0.3);
   }
+
   @media (max-width: 600px) {
-    body {
-      padding: 20px 10px;
+    .navbar ul {
+      flex-direction: column;
+      gap: 10px;
     }
     form {
       padding: 20px 25px;
@@ -130,31 +182,46 @@ if (isset($_POST['add'])) {
 </head>
 <body>
 
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="logo">📚 MySchool</div>
+  <ul>
+    <li><a href="../index.php">🏠 Home</a></li>
+    <li><a href="../register.php">📝 Student Register</a></li>
+    <li><a href="../login.php">👨‍🎓 Student Login</a></li>
+    <!-- <li><a href="../teacher/login.php">👩‍🏫 Teacher Login</a></li> -->
+    <li><a href="../admin/login.php">🛠️ Admin Login</a></li>
+    <li> <a href="dashboard.php" class="back-link">← Back to Teacher Dashboard</a></li>
+  </ul>
+</nav>
+    </div>
 <h2>Add Subject</h2>
 
 <?php if ($message): ?>
-  <p class="<?= strpos($message, 'successfully') !== false ? 'message' : 'error' ?>"><?= htmlspecialchars($message) ?></p>
+  <p class="<?= strpos($message, 'successfully') !== false ? 'message' : 'error' ?>">
+    <?= htmlspecialchars($message) ?>
+  </p>
 <?php endif; ?>
 
 <form method="post" autocomplete="off">
-    <label for="class_id">Select Class</label>
-    <select name="class_id" id="class_id" required>
-        <option value="">Select Class</option>
-        <?php while ($class = $classes->fetch_assoc()) { ?>
-            <option value="<?= $class['id'] ?>"><?= htmlspecialchars($class['class_name']) ?></option>
-        <?php } ?>
-    </select>
+  <label for="class_id">Select Class</label>
+  <select name="class_id" id="class_id" required>
+    <option value="">Select Class</option>
+    <?php while ($class = $classes->fetch_assoc()) { ?>
+      <option value="<?= $class['id'] ?>"><?= htmlspecialchars($class['class_name']) ?></option>
+    <?php } ?>
+  </select>
 
-    <label for="subject_name">Subject Name</label>
-    <input type="text" name="subject_name" id="subject_name" placeholder="Subject Name" required>
+  <label for="subject_name">Subject Name</label>
+  <input type="text" name="subject_name" id="subject_name" placeholder="Subject Name" required>
 
-    <label for="max_theory">Max Theory Marks</label>
-    <input type="number" name="max_theory" id="max_theory" placeholder="Max Theory Marks" min="0" required>
+  <label for="max_theory">Max Theory Marks</label>
+  <input type="number" name="max_theory" id="max_theory" placeholder="Max Theory Marks" min="0" required>
 
-    <label for="max_practical">Max Practical Marks</label>
-    <input type="number" name="max_practical" id="max_practical" placeholder="Max Practical Marks" min="0" required>
+  <label for="max_practical">Max Practical Marks</label>
+  <input type="number" name="max_practical" id="max_practical" placeholder="Max Practical Marks" min="0" required>
 
-    <button name="add" type="submit">Add Subject</button>
+  <button name="add" type="submit">Add Subject</button>
 </form>
 
 </body>

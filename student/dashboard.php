@@ -51,39 +51,81 @@ $results = $conn->query("
     <style>
         /* Reset & base */
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f3f4f6;
-            margin: 0;
-            padding: 20px;
-            color: #1e293b;
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            color: white;
             min-height: 100vh;
+            padding-top: 70px; /* space for fixed navbar */
         }
 
+        /* Navbar styles matching other pages */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #0f3460;
+            padding: 15px 30px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            color: #80ffdb;
+            font-weight: 600;
+        }
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+        .navbar ul li a:hover {
+            background-color: #3282b8;
+        }
+
+        /* Container styling for dashboard content */
         .container {
             max-width: 900px;
             margin: auto;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.1);
-            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px 40px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
         }
 
         h2 {
             text-align: center;
-            color: #2563eb;
+            color: #80ffdb;
             margin-bottom: 30px;
             font-weight: 700;
-            font-size: 2.2rem;
+            font-size: 2rem;
         }
 
         h3 {
-            color: #1e40af;
+            color: #a0c4ff;
             font-size: 1.5rem;
             margin-bottom: 15px;
-            border-bottom: 2px solid #2563eb;
+            border-bottom: 2px solid #3282b8;
             padding-bottom: 5px;
         }
 
@@ -92,60 +134,46 @@ $results = $conn->query("
             border-collapse: collapse;
             margin-bottom: 40px;
             font-size: 0.95rem;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            overflow: hidden;
         }
 
         th, td {
-            border: 1px solid #cbd5e1;
+            border: 1px solid rgba(255,255,255,0.2);
             padding: 12px 15px;
             text-align: left;
-            color: #334155;
+            color: #dbeafe;
         }
 
         th {
-            background-color: #e0e7ff;
-            color: #1e3a8a;
+            background-color: rgba(50, 130, 184, 0.8);
             font-weight: 600;
         }
 
         tr:nth-child(even) {
-            background-color: #f9fafb;
+            background-color: rgba(255, 255, 255, 0.1);
         }
 
         tr:hover {
-            background-color: #dbeafe;
+            background-color: #3282b8;
+            color: white;
         }
 
         p {
             font-size: 1.1rem;
-            color: #64748b;
+            color: #a0aec0;
             text-align: center;
             margin-bottom: 40px;
         }
 
-        a.logout-btn {
-            display: inline-block;
-            background-color: #2563eb;
-            color: white;
-            text-decoration: none;
-            padding: 12px 25px;
-            border-radius: 8px;
-            font-weight: 600;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
-            transition: background-color 0.3s ease;
-            margin-bottom: 20px;
-        }
-
-        a.logout-btn:hover {
-            background-color: #1e40af;
-        }
-
-        /* Responsive */
+        /* Responsive adjustments */
         @media (max-width: 768px) {
             .container {
                 padding: 20px;
             }
             h2 {
-                font-size: 1.8rem;
+                font-size: 1.6rem;
             }
             h3 {
                 font-size: 1.3rem;
@@ -153,16 +181,25 @@ $results = $conn->query("
             table, th, td {
                 font-size: 0.85rem;
             }
-            a.logout-btn {
-                padding: 10px 20px;
-                font-size: 0.9rem;
+            .navbar ul {
+                gap: 10px;
             }
         }
-
     </style>
 </head>
 <body>
-    <a href="../logout.php" class="logout-btn">Logout</a>
+
+<nav class="navbar">
+    <div class="logo">📚 MySchool</div>
+    <ul>
+        <li><a href="../index.php">🏠 Home</a></li>
+        <li><a href="../register.php">📝 Student Register</a></li>
+        <li><a href="../login.php">👨‍🎓 Student Login</a></li>
+        <li><a href="../teacher/login.php">👩‍🏫 Teacher Login</a></li>
+        <li><a href="../admin/login.php">🛠️ Admin Login</a></li>
+    </ul>
+</nav>
+
 <div class="container">
     <h2>Welcome, <?= htmlspecialchars($_SESSION['student_name']) ?></h2>
 
@@ -223,8 +260,6 @@ $results = $conn->query("
     <?php else: ?>
         <p>No results submitted yet.</p>
     <?php endif; ?>
-
-    <!-- <a href="../logout.php" class="logout-btn">Logout</a> -->
 </div>
 
 </body>

@@ -7,8 +7,8 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 
-// Fetch all approved teachers (or adjust as needed)
-$result = $conn->query("SELECT id, name, email, phone, photo FROM teachers ORDER BY name");
+// Fetch all approved students
+$result = $conn->query("SELECT id, name, email, phone, parent_phone, address, photo FROM students WHERE status='approved' ORDER BY name");
 
 if (!$result) {
     die("Database query failed: " . $conn->error);
@@ -18,25 +18,75 @@ if (!$result) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>All Teachers</title>
+    <title>All Approved Students</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             background: linear-gradient(135deg, #0f3460, #16213e);
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            padding: 40px 20px;
+            padding-top: 80px;
             color: white;
+            min-height: 100vh;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #0f3460;
+            padding: 15px 30px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            color: #80ffdb;
+            font-weight: 600;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #3282b8;
         }
 
         h2 {
             text-align: center;
             font-size: 28px;
             margin-bottom: 20px;
-            color: #f1f1f1;
+            color: #80ffdb;
         }
 
         table {
-            width: 100%;
+            width: 95%;
+            margin: auto;
             border-collapse: collapse;
             background-color: rgba(255,255,255,0.05);
             backdrop-filter: blur(6px);
@@ -68,21 +118,25 @@ if (!$result) {
             border: 2px solid #3282b8;
         }
 
-        a {
+        a.back-link {
             display: inline-block;
-            margin-top: 25px;
+            margin: 30px auto;
             text-decoration: none;
-            padding: 10px 20px;
+            padding: 12px 25px;
             background-color: #1a508b;
             color: white;
-            border-radius: 6px;
+            border-radius: 8px;
             font-weight: bold;
-            transition: 0.3s;
             text-align: center;
+            transition: background-color 0.3s ease;
         }
 
-        a:hover {
+        a.back-link:hover {
             background-color: #3282b8;
+        }
+
+        .link-container {
+            text-align: center;
         }
 
         @media (max-width: 768px) {
@@ -94,6 +148,11 @@ if (!$result) {
                 width: 45px;
                 height: 45px;
             }
+
+            .navbar ul {
+                gap: 10px;
+                flex-wrap: wrap;
+            }
         }
 
         @media (max-width: 480px) {
@@ -102,14 +161,28 @@ if (!$result) {
             }
 
             body {
-                padding: 20px 10px;
+                padding-top: 70px;
             }
         }
     </style>
 </head>
 <body>
 
-<h2>All Approved Teachers</h2>
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="logo">📚 MySchool</div>
+    <ul>
+        <li><a href="../index.php">🏠 Home</a></li>
+        <li><a href="../register.php">📝 Register</a></li>
+        <li><a href="../login.php">👨‍🎓 Student Login</a></li>
+        <li><a href="../teacher/login.php">👩‍🏫 Teacher Login</a></li>
+        <li><a href="../admin/login.php">🛠️ Admin Panel</a></li>
+    </ul>
+</nav>
+<div class="link-container">
+    <a href="dashboard.php" class="back-link">← Back to Admin Dashboard</a>
+</div>
+<h2>✅ Approved Students List</h2>
 
 <table>
     <thead>
@@ -118,6 +191,8 @@ if (!$result) {
             <th>Name</th>
             <th>Email</th>
             <th>Phone</th>
+            <th>Parent's Phone</th>
+            <th>Address</th>
         </tr>
     </thead>
     <tbody>
@@ -125,7 +200,7 @@ if (!$result) {
         <tr>
             <td>
                 <?php if (!empty($row['photo']) && file_exists("../uploads/" . $row['photo'])): ?>
-                    <img src="../uploads/<?= htmlspecialchars($row['photo']) ?>" alt="Photo of <?= htmlspecialchars($row['name']) ?>">
+                    <img src="../uploads/<?= htmlspecialchars($row['photo']) ?>" alt="<?= htmlspecialchars($row['name']) ?>">
                 <?php else: ?>
                     <img src="../uploads/default-user.png" alt="No photo">
                 <?php endif; ?>
@@ -133,14 +208,16 @@ if (!$result) {
             <td><?= htmlspecialchars($row['name']) ?></td>
             <td><?= htmlspecialchars($row['email']) ?></td>
             <td><?= htmlspecialchars($row['phone']) ?></td>
+            <td><?= htmlspecialchars($row['parent_phone']) ?></td>
+            <td><?= htmlspecialchars($row['address']) ?></td>
         </tr>
     <?php endwhile; ?>
     </tbody>
 </table>
 
-<div style="text-align:center;">
-    <a href="dashboard.php">← Back to Admin Dashboard</a>
-</div>
+<!-- <div class="link-container">
+    <a href="dashboard.php" class="back-link">← Back to Admin Dashboard</a>
+</div> -->
 
 </body>
 </html>
