@@ -8,8 +8,6 @@ if (!isset($_SESSION['teacher_id'])) {
 }
 
 $teacher_id = $_SESSION['teacher_id'];
-
-// Fetch approved students
 $students = $conn->query("SELECT id, name, email, phone FROM students WHERE status='approved' ORDER BY name");
 
 $message = '';
@@ -39,34 +37,75 @@ if (isset($_POST['send'])) {
     <title>Send Notice to Students</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: #f0f2f5;
-            margin: 0;
-            padding: 30px;
-            color: #333;
+            background: linear-gradient(135deg, #0f3460, #16213e);
+            padding-top: 80px;
+            color: white;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: #0f3460;
+            padding: 15px 30px;
+            z-index: 999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #80ffdb;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #3282b8;
         }
 
         .container {
             max-width: 800px;
             margin: auto;
-            background: white;
-            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
             padding: 30px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
         }
 
         h2 {
             text-align: center;
-            margin-bottom: 20px;
-            color: #2f3e46;
+            margin-bottom: 25px;
+            color: #80ffdb;
         }
 
         label {
             font-weight: bold;
             margin-top: 15px;
             display: block;
-            color: #1b263b;
+            color: #80ffdb;
         }
 
         input[type="text"],
@@ -75,13 +114,19 @@ if (isset($_POST['send'])) {
             width: 100%;
             padding: 10px;
             margin-top: 5px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255,255,255,0.12);
+            color: #e0e0e0;
             font-size: 15px;
         }
 
-        textarea {
-            resize: vertical;
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 0 5px #3282b8;
         }
 
         #studentList {
@@ -114,6 +159,10 @@ if (isset($_POST['send'])) {
             font-size: 16px;
             padding: 12px;
             transition: background 0.3s ease;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
         }
 
         button[type="submit"]:hover {
@@ -126,6 +175,8 @@ if (isset($_POST['send'])) {
             border-radius: 6px;
             background-color: #d1e7dd;
             color: #0f5132;
+            text-align: center;
+            font-weight: bold;
         }
 
         .error {
@@ -133,14 +184,16 @@ if (isset($_POST['send'])) {
             color: #842029;
         }
 
-        a {
-            display: block;
+        a.back-link {
+            display: inline-block;
             margin-top: 20px;
-            color: #0077b6;
+            color: #80ffdb;
             text-decoration: none;
+            text-align: center;
+            display: block;
         }
 
-        a:hover {
+        a.back-link:hover {
             text-decoration: underline;
         }
 
@@ -149,20 +202,31 @@ if (isset($_POST['send'])) {
                 padding: 20px;
             }
 
-            select, input, textarea {
-                font-size: 14px;
-            }
-
-            button {
-                font-size: 14px;
+            .navbar ul {
+                flex-direction: column;
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
 
+<!-- Navbar -->
+<nav class="navbar">
+    <div class="logo">📚 MySchool</div>
+    <ul>
+        <li><a href="../index.php">🏠 Home</a></li>
+        <li>    <a href="add-subject.php">Add Subjects</a></li>
+        <li>    <a href="student-list.php">View Students</a></li>
+        <!-- <li>    <a href="send-notice.php">Send Notice</a></li> -->
+        <li>    <a href="add-marks.php">Add Marks</a></li>
+        <li>        <a href="sent-history.php">Notices & Results History</a></li>
+<li>             <a href="dashboard.php">← Back to Teacher's Dashboard</a></li>
+    </ul>
+</nav>
+
 <div class="container">
-    <h2>Send Notice to Students</h2>
+    <h2>📩 Send Notice to Students</h2>
 
     <?php if ($message): ?>
         <div class="<?= str_contains($message, '⚠️') ? 'message error' : 'message' ?>">
@@ -171,7 +235,7 @@ if (isset($_POST['send'])) {
     <?php endif; ?>
 
     <form method="post">
-        <label for="searchBox">Search Students</label>
+        <label for="searchBox">🔍 Search Students</label>
         <input type="text" id="searchBox" placeholder="Search students..." onkeyup="filterList()">
 
         <div class="buttons">
@@ -179,7 +243,7 @@ if (isset($_POST['send'])) {
             <button type="button" onclick="deselectAll()">Deselect All</button>
         </div>
 
-        <label>Select Students</label>
+        <label>👥 Select Students</label>
         <select multiple name="student_ids[]" id="studentList">
             <?php while ($s = $students->fetch_assoc()): ?>
                 <option value="<?= $s['id'] ?>">
@@ -188,16 +252,15 @@ if (isset($_POST['send'])) {
             <?php endwhile; ?>
         </select>
 
-        <label>Subject</label>
+        <label>📌 Subject</label>
         <input type="text" name="subject" required>
 
-        <label>Message</label>
-        <textarea name="message" required></textarea>
+        <label>📝 Message</label>
+        <textarea name="message" rows="4" required></textarea>
 
         <button type="submit" name="send">Send Notice</button>
     </form>
 
-    <a href="dashboard.php">← Back to Dashboard</a>
 </div>
 
 <script>

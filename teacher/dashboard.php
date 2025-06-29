@@ -172,10 +172,12 @@ $notices = $conn->query("
     <div class="logo">📚 MySchool</div>
     <ul>
         <li><a href="../index.php">🏠 Home</a></li>
-        <li><a href="../register.php">📝 Student Register</a></li>
-        <li><a href="../login.php">👨‍🎓 Student Login</a></li>
-        <li><a href="../teacher/login.php">👩‍🏫 Teacher Login</a></li>
-        <li><a href="../admin/login.php">🛠️ Admin Login</a></li>
+        <li>    <a href="add-subject.php">Add Subjects</a></li>
+        <li>    <a href="student-list.php">View Students</a></li>
+        <li>    <a href="send-notice.php">Send Notice</a></li>
+        <li>    <a href="add-marks.php">Add Marks</a></li>
+        <li>        <a href="sent-history.php">Notices & Results History</a></li>
+        <!-- <li>        <a href="sent-history.php">Notices & Results History</a></li> -->
     </ul>
 </nav>
 

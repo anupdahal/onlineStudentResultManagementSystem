@@ -193,12 +193,19 @@ $results = $conn->query("
     <div class="logo">📚 MySchool</div>
     <ul>
         <li><a href="../index.php">🏠 Home</a></li>
-        <li><a href="../register.php">📝 Student Register</a></li>
-        <li><a href="../login.php">👨‍🎓 Student Login</a></li>
-        <li><a href="../teacher/login.php">👩‍🏫 Teacher Login</a></li>
-        <li><a href="../admin/login.php">🛠️ Admin Login</a></li>
+        <!-- <li><a href="../register.php">📝 Student Register</a></li> -->
+        <!-- <li><a href="../login.php">👨‍🎓 Student Login</a></li> -->
+        <!-- <li><a href="../teacher/login.php">👩‍🏫 Teacher Login</a></li> -->
+        <!-- <li><a href="../admin/login.php">🛠️ Admin Login</a></li> -->
     </ul>
 </nav>
+<a href="my-info.php" style="display:inline-block; padding:12px 20px; background:#1a508b; color:white; text-decoration:none; border-radius:8px; margin-top:20px;">
+    📄 My Information
+</a>
+<a href="print_marksheet.php" style="display:inline-block; margin-top:20px; padding:10px 20px; background:#1a508b; color:#fff; text-decoration:none; border-radius:8px;">
+    🖨️ Print Full Marksheet
+</a>
+
 
 <div class="container">
     <h2>Welcome, <?= htmlspecialchars($_SESSION['student_name']) ?></h2>

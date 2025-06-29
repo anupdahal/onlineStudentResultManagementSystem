@@ -184,10 +184,10 @@ if (isset($_POST['login'])) {
     <div class="logo">📚 MySchool</div>
     <ul>
         <li><a href="../index.php">🏠 Home</a></li>
-        <li><a href="../register.php">📝 Student Register</a></li>
+        <!-- <li><a href="../register.php">📝 Student Register</a></li>
         <li><a href="../login.php">👨‍🎓 Student Login</a></li>
         <li><a href="login.php">👩‍🏫 Teacher Login</a></li>
-        <li><a href="../admin/login.php">🛠️ Admin Login</a></li>
+        <li><a href="../admin/login.php">🛠️ Admin Login</a></li> -->
     </ul>
 </nav>
 
