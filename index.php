@@ -121,7 +121,7 @@
 <div class="navbar">
     <h1>Model Campus Damak</h1>
     <div class="nav-links">
-        <a href="#">Home</a>
+        <!-- <a href="#">Home</a> -->
         <a href="register.php">Register Student</a>
         <a href="login.php">Student Login</a>
         <a href="teacher/login.php">Teacher Login</a>
@@ -134,8 +134,7 @@
     <h2>Welcome to Online Result Management System</h2>
     <p>
         Our platform provides a seamless way for students, teachers, and administrators to manage academic performance.
-        It is designed to handle student registrations, marks entry, result publication, and communication between
-        school authorities and students — all from one secure and modern interface.
+        It is designed to handle student registrations, marks entry, result publication and notices — all from one secure and modern interface.
     </p>
 </section>
 
@@ -163,7 +162,7 @@
     </div>
     <div class="feature-box">
         <h3>🛠️ Admin Dashboard</h3>
-        <p>Manage users, view student applications, approve logins, assign teacher IDs, and track usage statistics.</p>
+        <p>Manage users, view student applications, approve logins, create teachers users, add class and add notices.</p>
     </div>
 </section>
 

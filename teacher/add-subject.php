@@ -182,19 +182,10 @@ if (isset($_POST['add'])) {
 </head>
 <body>
 
-<!-- Navbar -->
-<nav class="navbar">
-    <div class="logo">📚 MySchool</div>
-    <ul>
-        <li><a href="../index.php">🏠 Home</a></li>
-        <!-- <li>    <a href="add-subject.php">Add Subjects</a></li> -->
-        <li>    <a href="student-list.php">View Students</a></li>
-        <li>    <a href="send-notice.php">Send Notice</a></li>
-        <li>    <a href="add-marks.php">Add Marks</a></li>
-        <li>        <a href="sent-history.php">Notices & Results History</a></li>
-<li>             <a href="dashboard.php">← Back to Teacher's Dashboard</a></li>
-    </ul>
-</nav>
+<a href="dashboard.php" style="position: absolute; top: 20px; left: 20px; background-color: #3282b8; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: 0.3s;">
+    ← Back to Dashboard
+</a>
+
     </div>
 <h2>Add Subject</h2>
 

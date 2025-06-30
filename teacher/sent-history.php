@@ -150,6 +150,9 @@ $results = $conn->query("
     </style>
 </head>
 <body>
+<a href="dashboard.php" style="position: absolute; top: 20px; left: 20px; background-color: #3282b8; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: 0.3s;">
+    ← Back to Dashboard
+</a>
 
 <div class="container">
     <h2>📘 Teacher Sent History</h2>
@@ -202,7 +205,7 @@ $results = $conn->query("
         <p>No results submitted yet.</p>
     <?php endif; ?>
 
-    <a href="dashboard.php">← Back to Dashboard</a>
+    <!-- <a href="dashboard.php">← Back to Dashboard</a> -->
 </div>
 
 </body>

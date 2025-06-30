@@ -11,7 +11,6 @@ $teacher_id = $_SESSION['teacher_id'];
 $error = '';
 $success = '';
 
-// ✅ Form submission
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $student_id = $_POST['student_id'];
     $subject_id = $_POST['subject_id'];
@@ -34,7 +33,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 }
 
-// ✅ Fetch fresh data after processing
 $students = $conn->query("SELECT id, name, email, phone FROM students WHERE status='approved' ORDER BY name");
 $semesters = $conn->query("SELECT id, class_name FROM classes ORDER BY class_name");
 ?>
@@ -45,13 +43,20 @@ $semesters = $conn->query("SELECT id, class_name FROM classes ORDER BY class_nam
   <title>Add Marks</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       background: linear-gradient(135deg, #0f3460, #16213e);
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       color: white;
       margin: 0;
-      padding: 40px 20px;
+      padding-top: 70px;
     }
+
 
     h2 {
       text-align: center;
@@ -89,7 +94,6 @@ $semesters = $conn->query("SELECT id, class_name FROM classes ORDER BY class_nam
       font-size: 1rem;
       margin-bottom: 20px;
       transition: background-color 0.3s ease, box-shadow 0.3s ease;
-      box-sizing: border-box;
     }
 
     select:focus, input:focus {
@@ -117,28 +121,23 @@ $semesters = $conn->query("SELECT id, class_name FROM classes ORDER BY class_nam
       box-shadow: 0 6px 18px rgba(50,130,184,0.7);
     }
 
-    p[style*="color: red"] {
-      background-color: rgba(255,0,0,0.1);
-      color: #ff6b6b;
+    p[style*="color: red"], p[style*="color: green"] {
       padding: 12px 20px;
       border-radius: 10px;
       font-weight: 600;
       max-width: 600px;
       margin: 0 auto 20px auto;
       text-align: center;
-      box-shadow: 0 0 10px rgba(255,0,0,0.3);
+    }
+
+    p[style*="color: red"] {
+      background-color: rgba(255,0,0,0.1);
+      color: #ff6b6b;
     }
 
     p[style*="color: green"] {
       background-color: rgba(76,175,80,0.2);
       color: #4aff7a;
-      padding: 12px 20px;
-      border-radius: 10px;
-      font-weight: 600;
-      max-width: 600px;
-      margin: 0 auto 20px auto;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(76,175,80,0.5);
     }
 
     a {
@@ -155,8 +154,16 @@ $semesters = $conn->query("SELECT id, class_name FROM classes ORDER BY class_nam
     }
 
     @media (max-width: 650px) {
-      body {
-        padding: 20px 10px;
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px 20px;
+      }
+
+      .navbar ul {
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 10px;
       }
 
       form {
@@ -188,8 +195,11 @@ $semesters = $conn->query("SELECT id, class_name FROM classes ORDER BY class_nam
     }
   </script>
 </head>
-
 <body>
+
+<a href="dashboard.php" style="position: absolute; top: 20px; left: 20px; background-color: #3282b8; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: 0.3s;">
+    ← Back to Dashboard
+</a>  
 
 <h2>Add Marks</h2>
 
@@ -245,7 +255,7 @@ $semesters = $conn->query("SELECT id, class_name FROM classes ORDER BY class_nam
   <button type="submit">Submit Marks</button>
 </form>
 
-<a href="dashboard.php">← Back to Dashboard</a>
+<!-- <a href="dashboard.php">← Back to Dashboard</a> -->
 
 </body>
 </html>

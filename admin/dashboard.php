@@ -8,7 +8,7 @@ if (!isset($_SESSION['admin'])) {
 
 // Counts for statuses
 $studentApprovedCount = $conn->query("SELECT COUNT(*) as total FROM students WHERE status='approved'")->fetch_assoc()['total'];
-$studentInProgressCount = $conn->query("SELECT COUNT(*) as total FROM students WHERE status='in_progress'")->fetch_assoc()['total'];
+$studentInProgressCount = $conn->query("SELECT COUNT(*) as total FROM students WHERE status='pending'")->fetch_assoc()['total'];
 $teacherCount = $conn->query("SELECT COUNT(*) as total FROM teachers")->fetch_assoc()['total'];
 ?>
 
@@ -32,14 +32,51 @@ $teacherCount = $conn->query("SELECT COUNT(*) as total FROM teachers")->fetch_as
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             color: #fff;
             min-height: 100vh;
-            padding: 40px 20px;
-            animation: bgShift 20s ease infinite;
+            padding-top: 90px;
         }
 
-        @keyframes bgShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #0f3460;
+            padding: 15px 30px;
+            z-index: 999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+            color: #80ffdb;
+            font-weight: 600;
+        }
+
+        .navbar .logo {
+            font-size: 20px;
+            font-weight: bold;
+            color: #80ffdb;
+        }
+
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+            margin: 0;
+            padding: 0;
+        }
+
+        .navbar ul li a {
+            text-decoration: none;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .navbar ul li a:hover {
+            background-color: #3282b8;
         }
 
         .dashboard-box {
@@ -60,7 +97,6 @@ $teacherCount = $conn->query("SELECT COUNT(*) as total FROM teachers")->fetch_as
             font-weight: 700;
         }
 
-        /* Status summary boxes */
         .status-summary {
             display: flex;
             gap: 20px;
@@ -83,19 +119,19 @@ $teacherCount = $conn->query("SELECT COUNT(*) as total FROM teachers")->fetch_as
         }
 
         .status-box.approved {
-            background-color: #22c55e; /* green */
+            background-color: #22c55e;
             color: white;
             box-shadow: 0 6px 20px rgba(34, 197, 94, 0.7);
         }
 
         .status-box.in_progress {
-            background-color: #facc15; /* yellow */
+            background-color: #facc15;
             color: #1e293b;
             box-shadow: 0 6px 20px rgba(250, 204, 21, 0.7);
         }
 
         .status-box.teachers {
-            background-color: #3b82f6; /* blue */
+            background-color: #3b82f6;
             color: white;
             box-shadow: 0 6px 20px rgba(59, 130, 246, 0.7);
         }
@@ -106,8 +142,7 @@ $teacherCount = $conn->query("SELECT COUNT(*) as total FROM teachers")->fetch_as
             cursor: default;
         }
 
-        /* Navigation styling */
-        ul {
+        ul.dashboard-nav {
             list-style: none;
             padding-left: 0;
             max-width: 900px;
@@ -118,11 +153,11 @@ $teacherCount = $conn->query("SELECT COUNT(*) as total FROM teachers")->fetch_as
             justify-content: center;
         }
 
-        ul li {
+        ul.dashboard-nav li {
             flex: 1 1 280px;
         }
 
-        ul li a {
+        ul.dashboard-nav li a {
             text-decoration: none;
             color: white;
             background: linear-gradient(to right, #1a508b, #3282b8);
@@ -137,15 +172,14 @@ $teacherCount = $conn->query("SELECT COUNT(*) as total FROM teachers")->fetch_as
             transition: background 0.3s ease, transform 0.3s ease;
         }
 
-        ul li a:hover {
+        ul.dashboard-nav li a:hover {
             background: linear-gradient(to right, #3282b8, #1a508b);
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
             transform: translateX(5px);
         }
 
-        /* Badge styles */
         .badge {
-            background: #ef4444; /* red */
+            background: #ef4444;
             color: white;
             font-size: 0.85rem;
             padding: 3px 10px;
@@ -157,21 +191,9 @@ $teacherCount = $conn->query("SELECT COUNT(*) as total FROM teachers")->fetch_as
             user-select: none;
         }
 
-        /* Different badge colors for variety */
-        .badge.approved {
-            background: #22c55e;
-            color: #fff;
-        }
-
-        .badge.in_progress {
-            background: #facc15;
-            color: #1e293b;
-        }
-
-        .badge.teachers {
-            background: #3b82f6;
-            color: #fff;
-        }
+        .badge.approved { background: #22c55e; color: #fff; }
+        .badge.in_progress { background: #facc15; color: #1e293b; }
+        .badge.teachers { background: #3b82f6; color: #fff; }
 
         @media (max-width: 650px) {
             .status-summary {
@@ -179,45 +201,59 @@ $teacherCount = $conn->query("SELECT COUNT(*) as total FROM teachers")->fetch_as
                 align-items: center;
             }
 
-            ul li {
+            ul.dashboard-nav li {
                 flex: 1 1 100%;
             }
 
-            ul li a {
+            ul.dashboard-nav li a {
                 font-size: 1rem;
+            }
+
+            .navbar ul {
+                flex-wrap: wrap;
+                gap: 10px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="dashboard-box">
-        <h2>Welcome, Admin</h2>
 
-        <div class="status-summary">
-            <div class="status-box approved">
-                ✅ Approved Students<br>
-                <span><?= $studentApprovedCount ?></span>
-            </div>
-            <div class="status-box in_progress">
-                ⏳ Students In Progress<br>
-                <span><?= $studentInProgressCount ?></span>
-            </div>
-            <div class="status-box teachers">
-                👩‍🏫 Total Teachers<br>
-                <span><?= $teacherCount ?></span>
-            </div>
+<!-- ✅ Navigation Bar -->
+<nav class="navbar">
+    <div class="logo">🛠️ Admin Panel</div>
+    <ul>
+        <li><a href="../index.php">🏠 Home</a></li>
+        <li><a href="approve-students.php">✔️ Approve Students</a></li>
+        <li><a href="add-teacher.php">➕ Add Teacher</a></li>
+        <li><a href="view-teachers.php">👩‍🏫 View Teachers</a></li>
+        <li><a href="view-students.php">📋 View Students</a></li>
+        <li><a href="create-class.php">🏫 Create Class</a></li>
+        <li><a href="send-notice.php">📨 Send Notice</a></li>
+        <li><a href="sent-notices.php">📑 Sent Notices</a></li>
+        <!-- <li><a href="../logout.php">🚪 Logout</a></li> -->
+    </ul>
+</nav>
+
+<!-- ✅ Dashboard Box -->
+<div class="dashboard-box">
+    <h2>Welcome, Admin</h2>
+
+    <div class="status-summary">
+        <div class="status-box approved">
+            ✅ Approved Students<br>
+            <span><?= $studentApprovedCount ?></span>
         </div>
-
-        <ul>
-            <li><a href="approve-students.php">Approve Students <span class="badge in_progress"><?= $studentInProgressCount ?></span></a></li>
-            <li><a href="add-teacher.php">Add Teacher</a></li>
-            <li><a href="view-teachers.php">View Teachers <span class="badge teachers"><?= $teacherCount ?></span></a></li>
-            <li><a href="view-students.php">View Students <span class="badge approved"><?= $studentApprovedCount ?></span></a></li>
-            <li><a href="create-class.php">Create Class</a></li>
-            <li><a href="send-notice.php">Send Notice</a></li>
-            <li><a href="sent-notices.php">View Sent Notices</a></li>
-            <li><a href="../logout.php">Logout</a></li>
-        </ul>
+        <div class="status-box in_progress">
+            ⏳ Students In Progress<br>
+            <span><?= $studentInProgressCount ?></span>
+        </div>
+        <div class="status-box teachers">
+            👩‍🏫 Total Teachers<br>
+            <span><?= $teacherCount ?></span>
+        </div>
     </div>
+
+</div>
+
 </body>
 </html>

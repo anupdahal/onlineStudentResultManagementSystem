@@ -164,18 +164,10 @@ if (!$result) {
 <body>
 
 <!-- Navbar -->
-<nav class="navbar">
-    <div class="logo">📚 MySchool</div>
-    <ul>
-        <li><a href="../index.php">🏠 Home</a></li>
-        <li><a href="../register.php">📝 Student Register</a></li>
-        <li><a href="../login.php">👨‍🎓 Student Login</a></li>
-        <li><a href="../teacher/login.php">👩‍🏫 Teacher Login</a></li>
-        <li><a href="../admin/login.php">🛠️ Admin Login</a></li>
-    </ul>
-</nav>
-<div style="text-align:center;">
-    <a href="dashboard.php" class="back">← Back to Admin Dashboard</a>
+<a href="dashboard.php" style="position: absolute; top: 20px; left: 20px; background-color: #3282b8; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: 0.3s;">
+    ← Back to Dashboard
+</a>
+
 <h2>All Approved Students</h2>
 
 <table>

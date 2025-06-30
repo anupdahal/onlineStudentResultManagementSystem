@@ -110,6 +110,10 @@ if (isset($_POST['add'])) {
     </style>
 </head>
 <body>
+<a href="dashboard.php" style="position: absolute; top: 20px; left: 20px; background-color: #3282b8; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: 0.3s;">
+    ← Back to Dashboard
+</a>
+
     <form method="post" enctype="multipart/form-data" class="form-box">
         <h2>Add New Teacher</h2>
         <input type="text" name="name" placeholder="Full Name" required>
@@ -118,10 +122,10 @@ if (isset($_POST['add'])) {
         <input type="file" name="photo" required>
         <input type="password" name="password" placeholder="Create Password" required>
         <button name="add">Add Teacher</button>
-
+        
         <?php if (isset($success)): ?>
             <div class="message" style="color: #4aff7a"><?= $success ?></div>
-        <?php endif; ?>
-    </form>
-</body>
-</html>
+            <?php endif; ?>
+        </form>
+    </body>
+    </html>

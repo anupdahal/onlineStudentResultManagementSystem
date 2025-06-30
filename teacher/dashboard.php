@@ -169,7 +169,7 @@ $notices = $conn->query("
 
 <!-- Navbar -->
 <nav class="navbar">
-    <div class="logo">📚 MySchool</div>
+    <div class="logo">Teacher Pannel</div>
     <ul>
         <li><a href="../index.php">🏠 Home</a></li>
         <li>    <a href="add-subject.php">Add Subjects</a></li>
@@ -185,14 +185,14 @@ $notices = $conn->query("
 <h2>Welcome, <?= htmlspecialchars($_SESSION['teacher_name']) ?></h2>
 
 <!-- Functional links -->
-<div class="functions">
+<!-- <div class="functions">
     <a href="add-subject.php">Add Subjects</a>
     <a href="student-list.php">View Students</a>
     <a href="send-notice.php">Send Notice</a>
     <a href="add-marks.php">Add Marks</a>
     <a href="sent-history.php">Notices & Results History</a>
     <a href="../logout.php">Logout</a>
-</div>
+</div> -->
 
 <!-- Notices section -->
 <h3>Your Notices</h3>

@@ -190,21 +190,63 @@ $results = $conn->query("
 <body>
 
 <nav class="navbar">
-    <div class="logo">📚 MySchool</div>
+    <div class="logo">Student Pannel</div>
     <ul>
         <li><a href="../index.php">🏠 Home</a></li>
-        <!-- <li><a href="../register.php">📝 Student Register</a></li> -->
-        <!-- <li><a href="../login.php">👨‍🎓 Student Login</a></li> -->
-        <!-- <li><a href="../teacher/login.php">👩‍🏫 Teacher Login</a></li> -->
-        <!-- <li><a href="../admin/login.php">🛠️ Admin Login</a></li> -->
+        <li><a href="my-info.php">👤 My Info</a></li>
+        <li><a href="marksheet.php">📄 Print Marksheet</a></li>
+        <!-- <li><a href="../logout.php">🚪 Logout</a></li> -->
     </ul>
 </nav>
-<a href="my-info.php" style="display:inline-block; padding:12px 20px; background:#1a508b; color:white; text-decoration:none; border-radius:8px; margin-top:20px;">
+
+<style>
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-color: #0f3460;
+    padding: 15px 30px;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+    color: #80ffdb;
+    font-weight: 600;
+}
+.navbar .logo {
+    font-size: 20px;
+    font-weight: bold;
+}
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+.navbar ul li a {
+    text-decoration: none;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 6px;
+    transition: 0.3s;
+    font-weight: 500;
+}
+.navbar ul li a:hover {
+    background-color: #3282b8;
+}
+body {
+    padding-top: 70px; /* to offset fixed navbar height */
+}
+</style>
+
+<!-- <a href="my-info.php" style="display:inline-block; padding:12px 20px; background:#1a508b; color:white; text-decoration:none; border-radius:8px; margin-top:20px;">
     📄 My Information
 </a>
-<a href="print_marksheet.php" style="display:inline-block; margin-top:20px; padding:10px 20px; background:#1a508b; color:#fff; text-decoration:none; border-radius:8px;">
+<a href="marksheet.php" style="display:inline-block; margin-top:20px; padding:10px 20px; background:#1a508b; color:#fff; text-decoration:none; border-radius:8px;">
     🖨️ Print Full Marksheet
-</a>
+</a> -->
 
 
 <div class="container">

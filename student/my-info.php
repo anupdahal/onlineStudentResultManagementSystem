@@ -211,14 +211,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
-<nav class="navbar">
-    <div class="logo">📚 MySchool</div>
-    <ul>
-        <li><a href="dashboard.php">🏠 Student Dashboard</a></li>
-        <!-- <li><a href="my-info.php">📄 My Info</a></li> -->
-        <!-- <li><a href="logout.php">🚪 Logout</a></li> -->
-    </ul>
-</nav>
+<a href="dashboard.php" style="position: absolute; top: 20px; left: 20px; background-color: #3282b8; color: white; padding: 8px 16px; border-radius: 8px; text-decoration: none; font-weight: 600; box-shadow: 0 4px 12px rgba(0,0,0,0.3); transition: 0.3s;">
+    ← Back to Dashboard
+</a>
+
 
 <div class="container">
     <h2>📄 My Information</h2>
